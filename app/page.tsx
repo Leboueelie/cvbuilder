@@ -3,7 +3,7 @@ import { Eye, RotateCw, Save, ChevronDown, Download, ZoomIn, ZoomOut, User, Brie
 import Image from "next/image";
 import PersonalDetailsForm from "./components/PersonalDetailsForm";
 import { useEffect, useRef, useState } from "react";
-import { Education, Experience, Hobby, Language, PersonalDetails, Skill } from "@/type";
+import { Education, Experience, Hobby, Language, PersonalDetails, Skill, CVTemplate } from "@/type";
 import { educationsPreset, experiencesPreset, hobbiesPreset, languagesPreset, personalDetailsPreset, skillsPreset } from "@/presets";
 import CVPreview from "./components/CVPreview";
 import ExperienceForm from "./components/ExperienceForm";
@@ -19,6 +19,7 @@ export default function Home() {
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails>(personalDetailsPreset)
   const [file, setFile] = useState<File | null>(null)
   const [theme, setTheme] = useState<string>('cupcake')
+  const [template, setTemplate] = useState<CVTemplate>('classic')
   const [zoom, setZoom] = useState<number>(50)
   const [experiences, setExperience] = useState<Experience[]>(experiencesPreset)
   const [educations, setEducations] = useState<Education[]>(educationsPreset)
@@ -144,16 +145,16 @@ export default function Home() {
     onReset?: () => void
   }) => (
     <div className="bg-base-100 rounded-xl overflow-hidden shadow-sm border border-base-300 mb-3">
-      <button
-        onClick={() => toggleSection(sectionKey)}
-        className="w-full px-4 py-4 flex items-center justify-between bg-gradient-to-r from-base-100 to-base-200"
-      >
-        <div className="flex items-center gap-3">
+      <div className="w-full px-4 py-4 flex items-center justify-between bg-gradient-to-r from-base-100 to-base-200">
+        <button
+          onClick={() => toggleSection(sectionKey)}
+          className="flex items-center gap-3 flex-1 text-left"
+        >
           <div className="p-2 bg-primary/10 rounded-lg">
             <Icon className="w-5 h-5 text-primary" />
           </div>
           <span className="font-semibold">{title}</span>
-        </div>
+        </button>
         <div className="flex items-center gap-2">
           {onReset && (
             <button 
@@ -166,11 +167,13 @@ export default function Home() {
               <RotateCw className="w-4 h-4 text-base-content/60" />
             </button>
           )}
-          <ChevronDown 
-            className={`w-5 h-5 transition-transform ${openSection === sectionKey ? 'rotate-180' : ''}`} 
-          />
+          <button onClick={() => toggleSection(sectionKey)}>
+            <ChevronDown 
+              className={`w-5 h-5 transition-transform ${openSection === sectionKey ? 'rotate-180' : ''}`} 
+            />
+          </button>
         </div>
-      </button>
+      </div>
       {openSection === sectionKey && (
         <div className="p-4 border-t border-base-300">
           {children}
@@ -181,11 +184,21 @@ export default function Home() {
 
   const MobileEditView = () => (
     <div className="lg:hidden pt-20 pb-6 px-4 space-y-4 h-[calc(100vh-80px)] overflow-y-auto">
-      <div className="flex gap-2 mb-4">
+      <div className="flex gap-2 mb-4 flex-wrap">
+        <select
+          value={template}
+          onChange={(e) => setTemplate(e.target.value as CVTemplate)}
+          className="select select-bordered select-sm flex-1 min-w-[120px]"
+        >
+          <option value="classic">Classique</option>
+          <option value="modern">Moderne</option>
+          <option value="minimal">Minimaliste</option>
+          <option value="bold">Audacieux</option>
+        </select>
         <select
           value={theme}
           onChange={(e) => setTheme(e.target.value)}
-          className="select select-bordered select-sm flex-1"
+          className="select select-bordered select-sm flex-1 min-w-[120px]"
         >
           {themes.map((themeName) => (
             <option key={themeName} value={themeName}>
@@ -298,6 +311,7 @@ export default function Home() {
               personalDetails={personalDetails}
               file={file}
               theme={theme}
+              template={template}
               experiences={experiences}
               educations={educations}
               languages={languages}
@@ -339,6 +353,28 @@ export default function Home() {
             </div>
 
             <div className="flex flex-col gap-6 rounded-lg">
+              <div className="flex gap-2 mb-2">
+                <select
+                  value={template}
+                  onChange={(e) => setTemplate(e.target.value as CVTemplate)}
+                  className="select select-bordered select-sm flex-1"
+                >
+                  <option value="classic">Classique</option>
+                  <option value="modern">Moderne</option>
+                  <option value="minimal">Minimaliste</option>
+                  <option value="bold">Audacieux</option>
+                </select>
+                <select
+                  value={theme}
+                  onChange={(e) => setTheme(e.target.value)}
+                  className="select select-bordered select-sm flex-1"
+                >
+                  {themes.map((themeName) => (
+                    <option key={themeName} value={themeName}>{themeName}</option>
+                  ))}
+                </select>
+              </div>
+
               <div className="flex justify-between items-center">
                 <h1 className="badge badge-primary badge-outline">Qui etes-vous ?</h1>
                 <button onClick={handleResetPersonalDetails} className="btn btn-primary btn-sm">
@@ -407,21 +443,12 @@ export default function Home() {
               <p className="ml-4 text-sm text-primary">{zoom}%</p>
             </div>
 
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)}
-              className="select select-bordered fixed z-[9999] select-sm top-12 right-5"
-            >
-              {themes.map((themeName) => (
-                <option key={themeName} value={themeName}>{themeName}</option>
-              ))}
-            </select>
-
             <div className="flex justify-center items-center" style={{ transform: `scale(${zoom / 200})` }}>
               <CVPreview
                 personalDetails={personalDetails}
                 file={file}
                 theme={theme}
+                template={template}
                 experiences={experiences}
                 educations={educations}
                 languages={languages}
@@ -450,6 +477,7 @@ export default function Home() {
                     personalDetails={personalDetails}
                     file={file}
                     theme={theme}
+                    template={template}
                     experiences={experiences}
                     educations={educations}
                     languages={languages}

@@ -9,7 +9,6 @@ export type PersonalDetails = {
     postSeeking?: string;
 };
 
-
 export type Experience = {
     id?: string;
     jobTitle: string;
@@ -36,11 +35,12 @@ export type Skill = {
 export type Language = {
     id?: string;
     language: string;
-    proficiency: string; // Ex: Débutant, Intermédiaire, Avancé
+    proficiency: string;
 };
-
 
 export type Hobby = {
     id?: string;
     name: string;
 };
+
+export type CVTemplate = 'classic' | 'modern' | 'minimal' | 'bold';
