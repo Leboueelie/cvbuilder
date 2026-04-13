@@ -22,3 +22,31 @@
     -ms-overflow-style: none; 
     scrollbar-width: none; 
 }
+
+/* Mobile optimizations */
+@media (max-width: 1024px) {
+  .scrollable {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Fix iOS zoom on inputs */
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* Smooth accordion animation */
+.animate-in {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

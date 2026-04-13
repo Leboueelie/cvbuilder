@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'CV Builder',
-  description: 'Générateur de CV professionnel',
+  description: 'Generateur de CV professionnel',
 }
 
 export default function RootLayout({
@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="sunset">
+    <html lang="fr" data-theme="sunset">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
