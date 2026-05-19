@@ -1,7 +1,21 @@
-import { Education, Experience, Hobby, Language, PersonalDetails, Skill } from '@/type';
-import React from 'react'
-import Image from 'next/image'
-import { BriefcaseBusiness, GraduationCap, Mail, MapPinCheckInside, Phone, Star } from 'lucide-react';
+import {
+  Education,
+  Experience,
+  Hobby,
+  Language,
+  PersonalDetails,
+  Skill,
+} from "@/type";
+import React from "react";
+import Image from "next/image";
+import {
+  BriefcaseBusiness,
+  GraduationCap,
+  Mail,
+  MapPinCheckInside,
+  Phone,
+  Star,
+} from "lucide-react";
 
 interface Props {
   personalDetails: PersonalDetails;
@@ -16,20 +30,31 @@ interface Props {
 }
 
 function formatDate(dateString: string): string {
-  if (!dateString) return '';
+  if (!dateString) return "";
   const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-  return date.toLocaleDateString('fr-FR', options);
+  const options: Intl.DateTimeFormatOptions = {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  };
+  return date.toLocaleDateString("fr-FR", options);
 }
 
 const getStarRating = (proficiency: string) => {
   const maxStars = 5;
   let filledStars = 0;
   switch (proficiency) {
-    case 'Debutant': filledStars = 1; break;
-    case 'Intermediaire': filledStars = 3; break;
-    case 'Avance': filledStars = 5; break;
-    default: filledStars = 0;
+    case "Debutant":
+      filledStars = 1;
+      break;
+    case "Intermediaire":
+      filledStars = 3;
+      break;
+    case "Avance":
+      filledStars = 5;
+      break;
+    default:
+      filledStars = 0;
   }
   return (
     <>
@@ -41,11 +66,24 @@ const getStarRating = (proficiency: string) => {
       ))}
     </>
   );
-}
+};
 
-const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educations, languages, skills, hobbies, download, ref }) => {
+const CVClassic: React.FC<Props> = ({
+  personalDetails,
+  file,
+  experiences,
+  educations,
+  languages,
+  skills,
+  hobbies,
+  download,
+  ref,
+}) => {
   return (
-    <div ref={ref} className={`flex p-16 w-[950px] h-[1200px] shadow-lg ${download ? 'mb-10' : ''}`}>
+    <div
+      ref={ref}
+      className={`flex p-16 w-[950px] h-[1200px] shadow-lg ${download ? "mb-10" : ""}`}
+    >
       <div className="flex flex-col w-1/3">
         <div className="h-80 rounded-full border-8 overflow-hidden border-primary hobbies">
           {file && (
@@ -56,8 +94,8 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
               className="w-full h-full rounded-lg object-cover"
               alt="Photo de profil"
               onLoad={() => {
-                if (typeof file !== 'string') {
-                  URL.revokeObjectURL(URL.createObjectURL(file))
+                if (typeof file !== "string") {
+                  URL.revokeObjectURL(URL.createObjectURL(file));
                 }
               }}
             />
@@ -105,7 +143,9 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
             <h1 className="uppercase font-bold my-2">Competences</h1>
             <div className="flex flex-wrap gap-2">
               {skills.map((skill, index) => (
-                <p key={index} className="badge badge-primary uppercase">{skill.name}</p>
+                <p key={index} className="badge badge-primary uppercase">
+                  {skill.name}
+                </p>
               ))}
             </div>
           </div>
@@ -115,8 +155,12 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
             <div className="flex flex-col space-y-2">
               {languages.map((lang, index) => (
                 <div key={index}>
-                  <span className="capitalize font-semibold">{lang.language}</span>
-                  <div className="flex mt-2">{getStarRating(lang.proficiency)}</div>
+                  <span className="capitalize font-semibold">
+                    {lang.language}
+                  </span>
+                  <div className="flex mt-2">
+                    {getStarRating(lang.proficiency)}
+                  </div>
                 </div>
               ))}
             </div>
@@ -138,8 +182,12 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
       <div className="w-2/3 ml-8">
         <div className="w-full flex flex-col space-y-4">
           <h1 className="uppercase text-xl">{personalDetails.fullName}</h1>
-          <h2 className="uppercase text-5xl text-primary font-bold">{personalDetails.postSeeking}</h2>
-          <p className="break-all w-full text-sm">{personalDetails.description}</p>
+          <h2 className="uppercase text-5xl text-primary font-bold">
+            {personalDetails.postSeeking}
+          </h2>
+          <p className="break-words w-full text-sm leading-relaxed">
+            {personalDetails.description}
+          </p>
         </div>
 
         <section className="w-full h-fit p-5">
@@ -154,7 +202,9 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
                       <span className="ml-2">{exp.jobTitle}</span>
                     </h2>
                     <div className="text-sm my-2">
-                      <span className="badge badge-primary">{exp.companyName}</span>
+                      <span className="badge badge-primary">
+                        {exp.companyName}
+                      </span>
                       <span className="italic ml-2">
                         {formatDate(exp.startDate)} au {formatDate(exp.endDate)}
                       </span>
@@ -191,7 +241,7 @@ const CVClassic: React.FC<Props> = ({ personalDetails, file, experiences, educat
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CVClassic
+export default CVClassic;
