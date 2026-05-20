@@ -46,4 +46,10 @@ export type Hobby = {
   name: string;
 };
 
-export type CVTemplate = "classic" | "modern" | "minimal" | "bold";
+export type CVTemplate =
+  | "classic"
+  | "modern"
+  | "minimal"
+  | "bold"
+  | "profile"
+  | "skills";
