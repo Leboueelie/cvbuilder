@@ -29,15 +29,15 @@ interface Props {
   ref?: React.Ref<HTMLDivElement>;
 }
 
-function formatDate(dateString: string): string {
+function formatDate(dateString: string, isCurrent: boolean = false): string {
   if (!dateString) return "";
+  if (isCurrent) return "présent";
   const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    day: "2-digit",
-    month: "short",
+  return date.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
     year: "numeric",
-  };
-  return date.toLocaleDateString("fr-FR", options);
+  });
 }
 
 const getStarRating = (proficiency: string) => {
@@ -58,11 +58,11 @@ const getStarRating = (proficiency: string) => {
   }
   return (
     <>
-      {Array.from({ length: filledStars }, (_, index) => (
-        <Star key={index} className="text-primary" />
+      {Array.from({ length: filledStars }, (_, i) => (
+        <Star key={i} className="text-primary" />
       ))}
-      {Array.from({ length: maxStars - filledStars }, (_, index) => (
-        <Star key={index + filledStars} className="text-gray-300" />
+      {Array.from({ length: maxStars - filledStars }, (_, i) => (
+        <Star key={i + filledStars} className="text-gray-300" />
       ))}
     </>
   );
@@ -84,8 +84,9 @@ const CVClassic: React.FC<Props> = ({
       ref={ref}
       className={`flex p-16 w-[950px] h-[1200px] shadow-lg ${download ? "mb-10" : ""}`}
     >
+      {/* Colonne gauche */}
       <div className="flex flex-col w-1/3">
-        <div className="h-80 rounded-full border-8 overflow-hidden border-primary hobbies">
+        <div className="h-80 rounded-full border-8 overflow-hidden border-primary">
           {file && (
             <Image
               src={URL.createObjectURL(file)}
@@ -94,14 +95,12 @@ const CVClassic: React.FC<Props> = ({
               className="w-full h-full rounded-lg object-cover"
               alt="Photo de profil"
               onLoad={() => {
-                if (typeof file !== "string") {
+                if (typeof file !== "string")
                   URL.revokeObjectURL(URL.createObjectURL(file));
-                }
               }}
             />
           )}
         </div>
-
         <div className="mt-4 flex-col w-full">
           <div>
             <h1 className="uppercase font-bold my-2">Contact</h1>
@@ -138,23 +137,21 @@ const CVClassic: React.FC<Props> = ({
               </li>
             </ul>
           </div>
-
           <div className="mt-6">
-            <h1 className="uppercase font-bold my-2">Competences</h1>
+            <h1 className="uppercase font-bold my-2">Compétences</h1>
             <div className="flex flex-wrap gap-2">
-              {skills.map((skill, index) => (
-                <p key={index} className="badge badge-primary uppercase">
+              {skills.map((skill, i) => (
+                <p key={i} className="badge badge-primary uppercase">
                   {skill.name}
                 </p>
               ))}
             </div>
           </div>
-
           <div className="mt-6">
             <h1 className="uppercase font-bold my-2">Langues</h1>
             <div className="flex flex-col space-y-2">
-              {languages.map((lang, index) => (
-                <div key={index}>
+              {languages.map((lang, i) => (
+                <div key={i}>
                   <span className="capitalize font-semibold">
                     {lang.language}
                   </span>
@@ -165,12 +162,11 @@ const CVClassic: React.FC<Props> = ({
               ))}
             </div>
           </div>
-
           <div className="mt-6">
             <h1 className="uppercase font-bold my-2">Loisirs</h1>
             <div className="flex flex-col space-y-2">
-              {hobbies.map((hobby, index) => (
-                <div key={index}>
+              {hobbies.map((hobby, i) => (
+                <div key={i}>
                   <span className="capitalize">{hobby.name}</span>
                 </div>
               ))}
@@ -179,23 +175,24 @@ const CVClassic: React.FC<Props> = ({
         </div>
       </div>
 
+      {/* Colonne droite */}
       <div className="w-2/3 ml-8">
         <div className="w-full flex flex-col space-y-4">
           <h1 className="uppercase text-xl">{personalDetails.fullName}</h1>
           <h2 className="uppercase text-5xl text-primary font-bold">
             {personalDetails.postSeeking}
           </h2>
-          <p className="break-words w-full text-sm leading-relaxed">
+          <p className="break-words whitespace-pre-wrap w-full text-sm leading-relaxed">
             {personalDetails.description}
           </p>
         </div>
-
         <section className="w-full h-fit p-5">
+          {/* Expériences */}
           <div>
-            <h1 className="uppercase font-bold mb-2">Experiences</h1>
+            <h1 className="uppercase font-bold mb-2">Expériences</h1>
             <ul className="steps steps-vertical space-y-3">
-              {experiences.map((exp, index) => (
-                <li className="step step-primary" key={index}>
+              {experiences.map((exp, i) => (
+                <li className="step step-primary" key={i}>
                   <div className="text-left">
                     <h2 className="flex text-md uppercase font-bold">
                       <BriefcaseBusiness className="w-5" />
@@ -206,33 +203,41 @@ const CVClassic: React.FC<Props> = ({
                         {exp.companyName}
                       </span>
                       <span className="italic ml-2">
-                        {formatDate(exp.startDate)} au {formatDate(exp.endDate)}
+                        {formatDate(exp.startDate)} -{" "}
+                        {formatDate(exp.endDate, exp.isCurrent)}
                       </span>
                     </div>
-                    <p className="text-sm">{exp.description}</p>
+                    <p className="text-sm break-words whitespace-pre-wrap">
+                      {exp.description}
+                    </p>
                   </div>
                 </li>
               ))}
             </ul>
           </div>
-
+          {/* Formations */}
           <div className="mt-6">
             <h1 className="uppercase font-bold mb-2">Formations</h1>
             <ul className="steps steps-vertical space-y-3">
-              {educations.map((edu, index) => (
-                <li className="step step-primary" key={index}>
+              {educations.map((edu, i) => (
+                <li className="step step-primary" key={i}>
                   <div className="text-left">
                     <h2 className="flex text-md uppercase font-bold">
                       <GraduationCap className="w-5" />
-                      <span className="ml-2">{edu.degree}</span>
+                      <span className="ml-2">
+                        {edu.degree} ({edu.level})
+                      </span>
                     </h2>
                     <div className="text-sm my-2">
                       <span className="badge badge-primary">{edu.school}</span>
                       <span className="italic ml-2">
-                        {formatDate(edu.startDate)} au {formatDate(edu.endDate)}
+                        {formatDate(edu.startDate)} -{" "}
+                        {formatDate(edu.endDate, edu.isCurrent)}
                       </span>
                     </div>
-                    <p className="text-sm">{edu.description}</p>
+                    <p className="text-sm break-words whitespace-pre-wrap">
+                      {edu.description}
+                    </p>
                   </div>
                 </li>
               ))}

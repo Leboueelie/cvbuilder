@@ -5,62 +5,72 @@ import {
   Language,
   PersonalDetails,
   Skill,
-} from "@/type";
+} from "./type";
 
 export const personalDetailsPreset: PersonalDetails = {
-  fullName: "John Doe",
-  email: "johndoe@example.com",
-  phone: "+123456789",
-  address: "123, Avenue Example, Paris, France",
+  fullName: "Marie Dupont",
+  email: "marie.dupont@email.com",
+  phone: "+33 6 12 34 56 78",
+  address: "Paris, France",
   photoUrl: "/profile.jpg",
-  postSeeking: "Chargé de Communication",
+  postSeeking: "Développeuse Full Stack",
   description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+    "Développeuse passionnée avec 5 ans d'expérience.\nSpécialisée en React, Node.js et TypeScript.",
 };
 
 export const experiencesPreset: Experience[] = [
   {
-    id: "uuid-1",
-    jobTitle: "Développeur Web",
-    companyName: "Tech Solutions",
-    startDate: "2022-01-01",
-    endDate: "2023-01-01",
-    description:
-      "Développement d'applications web en utilisant React et Node.js.",
+    jobTitle: "Développeuse Full Stack",
+    companyName: "TechCorp",
+    startDate: "2021-01-01",
+    endDate: "",
+    isCurrent: true,
+    description: "Création d'applications web avec React et Node.js.",
   },
   {
-    id: "uuid-2",
-    jobTitle: "Chef de projet",
-    companyName: "Innovatech",
-    startDate: "2020-06-01",
-    endDate: "2022-01-01",
-    description:
-      "Gestion de projets techniques, coordination des équipes de développement.",
+    jobTitle: "Développeuse Front-End",
+    companyName: "WebStudio",
+    startDate: "2019-06-01",
+    endDate: "2020-12-31",
+    isCurrent: false,
+    description: "Intégration de maquettes et optimisation des performances.",
   },
 ];
 
 export const educationsPreset: Education[] = [
   {
-    id: "uuid-3",
-    degree: "Master en Informatique",
-    school: "Edu",
-    startDate: "2015-09-01",
-    endDate: "2018-06-01",
-    description: "Spécialisation en développement web et bases de données.",
+    school: "Université Paris-Saclay",
+    degree: "Master Informatique",
+    level: "Master",
+    description: "Spécialisation Génie Logiciel",
+    startDate: "2018-09-01",
+    endDate: "2020-06-30",
+    isCurrent: false,
+  },
+  {
+    school: "IUT Paris",
+    degree: "DUT Informatique",
+    level: "Bac+2",
+    description: "",
+    startDate: "2016-09-01",
+    endDate: "2018-06-30",
+    isCurrent: false,
   },
 ];
 
-export const skillsPreset: Skill[] = [
-  { id: "uuid-4", name: "React.js" },
-  { id: "uuid-5", name: "Node.js" },
-];
-
 export const languagesPreset: Language[] = [
-  { language: "Francais", proficiency: "Avance" },
+  { language: "Français", proficiency: "Avance" },
   { language: "Anglais", proficiency: "Intermediaire" },
 ];
 
+export const skillsPreset: Skill[] = [
+  { name: "React" },
+  { name: "TypeScript" },
+  { name: "Node.js" },
+  { name: "Tailwind CSS" },
+];
+
 export const hobbiesPreset: Hobby[] = [
-  { id: "uuid-8", name: "Voyager" },
-  { id: "uuid-9", name: "Lire des livres" },
+  { name: "Lecture" },
+  { name: "Running" },
 ];
