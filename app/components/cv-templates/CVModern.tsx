@@ -83,7 +83,7 @@ const CVModern: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`w-[950px] h-[1200px] bg-base-100 flex flex-col ${download ? "mb-10" : ""}`}
+      className={`w-[950px] min-h-[1200px] bg-base-100 flex flex-col ${download ? "mb-10" : ""}`}
     >
       {/* Header */}
       <header className="bg-primary text-primary-content p-12 flex items-center gap-8">

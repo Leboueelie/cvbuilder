@@ -76,7 +76,7 @@ const CVSkills: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`w-[950px] h-[1200px] bg-base-100 flex flex-col p-8 shadow-lg ${download ? "mb-10" : ""}`}
+      className={`w-[950px] min-h-[1200px] bg-base-100 flex flex-col p-8 shadow-lg ${download ? "mb-10" : ""}`}
     >
       {/* En-tête avec photo + identité */}
       <div className="flex items-center gap-6 border-b-2 border-primary pb-6 mb-6">

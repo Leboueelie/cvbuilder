@@ -82,7 +82,7 @@ const CVClassic: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`flex p-16 w-[950px] h-[1200px] shadow-lg ${download ? "mb-10" : ""}`}
+      className={`flex p-16 w-[950px] min-h-[1200px] shadow-lg ${download ? "mb-10" : ""}`}
     >
       {/* Colonne gauche */}
       <div className="flex flex-col w-1/3">

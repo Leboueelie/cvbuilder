@@ -42,7 +42,7 @@ const CVBold: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`w-[950px] h-[1200px] bg-base-100 flex ${download ? "mb-10" : ""}`}
+      className={`w-[950px] min-h-[1200px] bg-base-100 flex ${download ? "mb-10" : ""}`}
     >
       {/* Bande gauche colorée */}
       <div className="w-1/3 bg-primary text-primary-content p-10 flex flex-col">

@@ -42,7 +42,7 @@ const CVMinimal: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`w-[950px] h-[1200px] bg-white text-gray-900 p-20 ${download ? "mb-10" : ""}`}
+      className={`w-[950px] min-h-[1200px] bg-white text-gray-900 p-20 ${download ? "mb-10" : ""}`}
     >
       {/* Header */}
       <header className="border-b-2 border-gray-900 pb-8 mb-12">

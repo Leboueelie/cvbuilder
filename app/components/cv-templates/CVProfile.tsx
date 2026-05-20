@@ -76,7 +76,7 @@ const CVProfile: React.FC<Props> = ({
   return (
     <div
       ref={ref}
-      className={`w-[950px] h-[1200px] bg-base-100 flex shadow-lg ${download ? "mb-10" : ""}`}
+      className={`w-[950px] min-h-[1200px] bg-base-100 flex shadow-lg ${download ? "mb-10" : ""}`}
     >
       {/* COLONNE GAUCHE (PROFIL) */}
       <div className="w-2/5 bg-base-200 p-8 flex flex-col gap-6">
