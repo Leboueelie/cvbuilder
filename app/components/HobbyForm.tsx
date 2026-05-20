@@ -47,9 +47,8 @@ const HobbyForm: React.FC<Props> = ({ hobbies, setHobbies }) => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Champ de saisie + boutons */}
-      <div className="flex gap-3 items-end">
+    <div className="space-y-5">
+      <div className="flex gap-3">
         <input
           type="text"
           placeholder="Loisir (ex: Lecture, Voyage...)"
@@ -76,13 +75,12 @@ const HobbyForm: React.FC<Props> = ({ hobbies, setHobbies }) => {
         </div>
       </div>
 
-      {/* Liste des loisirs ajoutés - espacement large */}
       {hobbies.length > 0 && (
-        <div className="flex flex-wrap gap-3 mt-3">
+        <div className="flex flex-wrap gap-4 mt-4">
           {hobbies.map((hobby, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 bg-base-300 rounded-full px-4 py-2 text-sm"
+              className="inline-flex items-center gap-3 bg-base-300 rounded-full px-4 py-2 text-sm"
             >
               <span>{hobby.name}</span>
               <button

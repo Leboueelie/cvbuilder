@@ -47,9 +47,9 @@ const SkillForm: React.FC<Props> = ({ skills, setSkills }) => {
   };
 
   return (
-    <div className="space-y-4">
-      {/* Champ de saisie + boutons */}
-      <div className="flex gap-3 items-end">
+    <div className="space-y-5">
+      {/* Ligne input + bouton */}
+      <div className="flex gap-3">
         <input
           type="text"
           placeholder="Compétence (ex: React, Figma...)"
@@ -76,13 +76,13 @@ const SkillForm: React.FC<Props> = ({ skills, setSkills }) => {
         </div>
       </div>
 
-      {/* Liste des compétences ajoutées - espacement large */}
+      {/* Liste des compétences - espacement généreux */}
       {skills.length > 0 && (
-        <div className="flex flex-wrap gap-3 mt-3">
+        <div className="flex flex-wrap gap-4 mt-4">
           {skills.map((skill, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm"
+              className="inline-flex items-center gap-3 bg-primary/10 text-primary rounded-full px-4 py-2 text-sm"
             >
               <span>{skill.name}</span>
               <button

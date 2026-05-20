@@ -323,7 +323,8 @@ export default function Home() {
         <LanguageForm languages={languages} setLanguages={setLanguages} />
       </MobileAccordionItem>
 
-      <div className="grid grid-cols-2 gap-3">
+      {/* Sections Compétences et Loisirs empilées verticalement (non côte à côte) */}
+      <div className="space-y-3">
         <MobileAccordionItem
           title="Competences"
           icon={Star}
@@ -414,7 +415,7 @@ export default function Home() {
 
       <div className="hidden lg:block">
         <section className="flex items-center h-screen">
-          <div className="w-1/3 h-full p-10 bg-base-200 scrollable no-scrollbar">
+          <div className="w-1/3 h-full p-10 bg-base-200 scrollable no-scrollbar overflow-y-auto">
             <div className="mb-4 flex justify-between items-center">
               <h1 className="text-2xl font-bold italic">
                 CV<span className="text-primary">Builder</span>
@@ -519,8 +520,9 @@ export default function Home() {
               </div>
               <LanguageForm languages={languages} setLanguages={setLanguages} />
 
-              <div className="flex justify-between">
-                <div className="w-1/2">
+              {/* Sections Compétences et Loisirs empilées verticalement (non côte à côte) */}
+              <div className="space-y-6">
+                <div>
                   <div className="flex justify-between items-center">
                     <h1 className="badge badge-primary badge-outline">
                       Competences
@@ -534,7 +536,7 @@ export default function Home() {
                   </div>
                   <SkillForm skills={skills} setSkills={setSkills} />
                 </div>
-                <div className="ml-4 w-1/2">
+                <div>
                   <div className="flex justify-between items-center">
                     <h1 className="badge badge-primary badge-outline">
                       Loisirs
