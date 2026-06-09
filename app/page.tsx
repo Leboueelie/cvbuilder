@@ -14,7 +14,6 @@ import {
   Star,
   Target,
 } from "lucide-react";
-import Image from "next/image";
 import PersonalDetailsForm from "./components/PersonalDetailsForm";
 import { useEffect, useRef, useState } from "react";
 import {
@@ -44,35 +43,113 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import confetti from "canvas-confetti";
 
+// Hook personnalisé pour localStorage
+function useLocalStorage<T>(
+  key: string,
+  initialValue: T,
+): [T, (value: T) => void] {
+  const [storedValue, setStoredValue] = useState<T>(initialValue);
+
+  useEffect(() => {
+    try {
+      const item = window.localStorage.getItem(key);
+      if (item) {
+        setStoredValue(JSON.parse(item));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [key]);
+
+  const setValue = (value: T) => {
+    try {
+      setStoredValue(value);
+      window.localStorage.setItem(key, JSON.stringify(value));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  return [storedValue, setValue];
+}
+
 export default function Home() {
-  const [personalDetails, setPersonalDetails] = useState<PersonalDetails>(
-    personalDetailsPreset,
+  // Tous les states sont maintenant persistant dans localStorage
+  const [personalDetails, setPersonalDetails] =
+    useLocalStorage<PersonalDetails>("personalDetails", personalDetailsPreset);
+  const [experiences, setExperience] = useLocalStorage<Experience[]>(
+    "experiences",
+    experiencesPreset,
   );
+  const [educations, setEducations] = useLocalStorage<Education[]>(
+    "educations",
+    educationsPreset,
+  );
+  const [languages, setLanguages] = useLocalStorage<Language[]>(
+    "languages",
+    languagesPreset,
+  );
+  const [skills, setSkills] = useLocalStorage<Skill[]>("skills", skillsPreset);
+  const [hobbies, setHobbies] = useLocalStorage<Hobby[]>(
+    "hobbies",
+    hobbiesPreset,
+  );
+  const [theme, setTheme] = useLocalStorage<string>("theme", "cupcake");
+  const [template, setTemplate] = useLocalStorage<CVTemplate>(
+    "template",
+    "classic",
+  );
+  const [zoom, setZoom] = useLocalStorage<number>("zoom", 50);
+
+  // Gestion de la photo (fichier) : stockage en base64
   const [file, setFile] = useState<File | null>(null);
-  const [theme, setTheme] = useState<string>("cupcake");
-  const [template, setTemplate] = useState<CVTemplate>("classic");
-  const [zoom, setZoom] = useState<number>(50);
-  const [experiences, setExperience] =
-    useState<Experience[]>(experiencesPreset);
-  const [educations, setEducations] = useState<Education[]>(educationsPreset);
-  const [languages, setLanguages] = useState<Language[]>(languagesPreset);
-  const [skills, setSkills] = useState<Skill[]>(skillsPreset);
-  const [hobbies, setHobbies] = useState<Hobby[]>(hobbiesPreset);
+  const [photoBase64, setPhotoBase64] = useLocalStorage<string | null>(
+    "photoBase64",
+    null,
+  );
+
+  // Charger la photo à partir du base64 stocké
+  useEffect(() => {
+    if (photoBase64) {
+      fetch(photoBase64)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const fileFromStorage = new File([blob], "profile.jpg", {
+            type: blob.type,
+          });
+          setFile(fileFromStorage);
+        })
+        .catch(() => setFile(null));
+    } else {
+      // Photo par défaut si aucune sauvegarde
+      const defaultImageUrl = "/profile.jpg";
+      fetch(defaultImageUrl)
+        .then((res) => res.blob())
+        .then((blob) => {
+          const defaultFile = new File([blob], "profile.jpg", {
+            type: blob.type,
+          });
+          setFile(defaultFile);
+        });
+    }
+  }, [photoBase64]);
+
+  // Sauvegarder la photo en base64 quand elle change
+  const handleSetFile = (newFile: File | null) => {
+    setFile(newFile);
+    if (newFile) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPhotoBase64(reader.result as string);
+      };
+      reader.readAsDataURL(newFile);
+    } else {
+      setPhotoBase64(null);
+    }
+  };
 
   const [activeTab, setActiveTab] = useState<"edit" | "preview">("edit");
   const [openSection, setOpenSection] = useState<string | null>("personal");
-
-  useEffect(() => {
-    const defaultImageUrl = "/profile.jpg";
-    fetch(defaultImageUrl)
-      .then((res) => res.blob())
-      .then((blob) => {
-        const defaultFile = new File([blob], "profile.jpg", {
-          type: blob.type,
-        });
-        setFile(defaultFile);
-      });
-  }, []);
 
   const themes = [
     "light",
@@ -289,7 +366,7 @@ export default function Home() {
         <PersonalDetailsForm
           personalDetails={personalDetails}
           setPersonalDetails={setPersonalDetails}
-          setFile={setFile}
+          setFile={handleSetFile}
         />
       </MobileAccordionItem>
 
@@ -323,7 +400,6 @@ export default function Home() {
         <LanguageForm languages={languages} setLanguages={setLanguages} />
       </MobileAccordionItem>
 
-      {/* Sections Compétences et Loisirs empilées verticalement (non côte à côte) */}
       <div className="space-y-3">
         <MobileAccordionItem
           title="Competences"
@@ -333,7 +409,6 @@ export default function Home() {
         >
           <SkillForm skills={skills} setSkills={setSkills} />
         </MobileAccordionItem>
-
         <MobileAccordionItem
           title="Loisirs"
           icon={Target}
@@ -367,7 +442,6 @@ export default function Home() {
             </button>
           </div>
         </div>
-
         <div className="flex-1 overflow-auto bg-base-200 rounded-lg relative">
           <div
             className="absolute left-1/2 top-0"
@@ -390,7 +464,6 @@ export default function Home() {
             />
           </div>
         </div>
-
         <button
           onClick={() =>
             (
@@ -474,7 +547,7 @@ export default function Home() {
               <PersonalDetailsForm
                 personalDetails={personalDetails}
                 setPersonalDetails={setPersonalDetails}
-                setFile={setFile}
+                setFile={handleSetFile}
               />
 
               <div className="flex justify-between items-center">
@@ -520,7 +593,6 @@ export default function Home() {
               </div>
               <LanguageForm languages={languages} setLanguages={setLanguages} />
 
-              {/* Sections Compétences et Loisirs empilées verticalement (non côte à côte) */}
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-center">
@@ -566,7 +638,6 @@ export default function Home() {
               />
               <p className="ml-4 text-sm text-primary">{zoom}%</p>
             </div>
-
             <div
               className="flex justify-center items-center"
               style={{ transform: `scale(${zoom / 200})` }}
